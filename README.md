@@ -63,7 +63,7 @@ const Diamonds = [
     data: [
       // Market facets
       'market/facets/Create.sol:Create',
-      'market/facets/Markets.sol:MArkets'
+      'market/facets/Markets.sol:Markets'
     ]
   }
 ];
@@ -118,7 +118,7 @@ const Diamonds = [
   {
     key: 'nft',
     data: [
-      // nft facets
+      // OrderNFT facets
       'orderbook/nft/facets/Mint.sol:Mint',
       'orderbook/nft/facets/Burn.sol:Burn',
       'orderbook/nft/facets/Transfer.sol:Transfer'
