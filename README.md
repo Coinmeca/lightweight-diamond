@@ -45,7 +45,7 @@ In this example repository, facet management and state value management storage 
 This implementation simplifies building the diamond pattern through contract inheritance, as shown below:
 
 ```
-import {DiamondContract} from "modules/diamond/DiamondContract.sol";
+import {DiamondContract} from "@coinmeca/lightweight-diamond/DiamondContract.sol";
 
 contract Service is DiamondContract
 ```
@@ -152,9 +152,11 @@ contract Service is DiamondContract{
 If it facade, can be used like this. facada need the parent diamond's address for the finding there facets, because of they doens't own their facets.
 
 ```
+contract Service is DiamondFacade{
     constructor(
         address _parentDiamond
     ) DiamondFacade("orderbook", _parentDiamond) {}
+}
 ```
 
 Through the key defined above, we can divide storage and identify position, and figure values, then use this. This can also be used for access control purposes. All the facets were stored in one diamond, but even the diamond self cannot access the child's (facade) storage position because they have different keys to each other.
