@@ -168,6 +168,21 @@ Through the key defined above, we can divide storage and identify position, and 
     └─ Orderbook Facets  ◀── ✕ ──┘  │
     └─ OrderNFT Facets   ◀── ✕ ─────┘
 
+─ Orderbook Facade
+─ Order NFT Facade
+
+```
+
+```
+─ Market Diamond ──────────────┐
+  └─ DiamondContractManager    │
+    └─ Market Facets　   ◀────┘
+    └─ Orderbook Facets  ◀──┐
+    └─ OrderNFT Facets   ◀──┼──┐
+                            │  │
+─ Orderbook Facade  ────────┘  │
+─ Order NFT Facade  ───────────┘
+
 ```
 
 Possible to divide storage and access this via a one diamond, But also can make another diamond as a sharing point for common functions that be working in each clone contracts(facade).
