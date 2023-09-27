@@ -176,7 +176,7 @@ Through the key defined above, we can divide storage and identify position, and 
 ```
 ─ Market Diamond ──────────────┐
   └─ DiamondContractManager    │
-    └─ Market Facets　   ◀────┘
+    └─ Market Facets　   ◀─────┘
     └─ Orderbook Facets  ◀──┐
     └─ OrderNFT Facets   ◀──┼──┐
                             │  │
