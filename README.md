@@ -167,10 +167,6 @@ Through the key defined above, we can divide storage and identify position, and 
     └─ Market Facets　   ◀────┘  │  │
     └─ Orderbook Facets  ◀── ✕ ──┘  │
     └─ OrderNFT Facets   ◀── ✕ ─────┘
-
-─ Orderbook Facade
-─ Order NFT Facade
-
 ```
 
 ```
@@ -237,6 +233,35 @@ contract Orderbook is DiamondFacade{
 ```
 
 Failure to do so may result in the facets being stored in the wrong position of the slot or the contract attempting to locate the facet addresses in the wrong position.
+
+### Interfaces
+
+As mentioned, Facade only acts as an endpoint to help connect in the middle, and since all facet data is managed by Diamond, the interfaces of child facades cannot be allow in each their facade directly. Therefore, if you want to manage the interface according to the type of each child facade, you must interact directly with the parent diamond. You can call `setInterface(bytes32 _key, bytes4 _interface, bool _state)` directly, but if you want to batch process it directly in the constructor, you can use it as follows.
+
+```
+constructor(
+    IDiamond.Cut[] memory _diamondCut,
+    IDiamond.Args memory _args
+) DiamondContract("market", _diamondCut, _args) {
+    setInterface(
+        keccak256("market"),
+        type(IMarket).interfaceId,
+        true
+    );
+
+    setInterface(
+        keccak256("orderbook"),
+        type(IOrderbook).interfaceId,
+        true
+    );
+
+    setInterface(
+        keccak256("nft"),
+        type(INFT).interfaceId,
+        true
+    );
+}
+```
 
 ### Diamond Factory
 
