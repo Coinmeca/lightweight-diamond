@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 /******************************************************************************\
 * Author: Nick Mudge <nick@perfectabstractions.com>, Twitter/Github: @mudgen
-* Modifier : Coinmeca Team <contact@coinmeca.net>
+* Modifier : Coinmeca Team <dev@coinmeca.net>
 * Lightweight version of EIP-2535 Diamonds
 \******************************************************************************/
 
