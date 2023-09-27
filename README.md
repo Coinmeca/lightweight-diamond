@@ -162,9 +162,9 @@ Through the key defined above, we can divide storage and identify position, and 
 ```
 ─ Market Diamond ─────────────┬──┬──┐
   └─ DiamondContractManager   │  │  │
-    └─ Market Facets　   ◀───┘  │  │
-    └─ Orderbook Facets  ◀── ✕ ─┘  │
-    └─ OrderNFT Facets   ◀── ✕ ────┘
+    └─ Market Facets　   ◀────┘  │  │
+    └─ Orderbook Facets  ◀── ✕ ──┘  │
+    └─ OrderNFT Facets   ◀── ✕ ─────┘
 
 ```
 
@@ -179,16 +179,16 @@ Possible to divide storage and access this via a one diamond, But also can make 
 ▼
 ─ Orderbook 1
   │ ├─ Local Data Storage
-  │ └─ Orderbook Functions (Fallback) ─┐
-  │                                    │
-─ Orderbook 2                          │
-  │ ├─ Local Data Storage              │
-  │ └─ Orderbook Functions (Fallback) ─┤
-　：                                   │
-                                       │
-─ Orderbook Function Store             │
-└─ DiamondContractManager              │
-    └─ Orderbook Facets  ◀────────────┘
+  │ └─ Orderbook Functions (Fallback) ──┐
+  │                                     │
+─ Orderbook 2                           │
+  │ ├─ Local Data Storage               │
+  │ └─ Orderbook Functions (Fallback)  ─┤
+　：                                     │
+                                        │
+─ Orderbook Function Store              │
+└─ DiamondContractManager               │
+    └─ Orderbook Facets  ◀──────────────┘
 
 ```
 
@@ -244,7 +244,7 @@ Therefore, facades can be created infinitely, each with its own storage. However
   │
   └─ DiamondContractManager (Data Storage for Facets)
      ├─ Market facets
-     └─ Orderbook facets  ◀──────────────────────────┐
+     └─ Orderbook facets  ◀───────────────────────────┐
                                                       │
 ─ Orderbook 1 (Diamond Facade) ───────────────────────┤
   │ └─ Data.sol (Local Data Storage for Orderbook 1)  │
