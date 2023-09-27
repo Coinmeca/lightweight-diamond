@@ -62,8 +62,8 @@ const Diamonds = [
     key: 'diamond.only',
     data: [
       // Market facets
-      'market/facets/Create.sol',
-      'market/facets/Markets.sol'
+      'market/facets/Create.sol:Create',
+      'market/facets/Markets.sol:MArkets'
     ]
   }
 ];
@@ -78,7 +78,7 @@ const Diamonds = [
     data: [
       // Market facets
       'market/facets/Create.sol:Create',
-      'market/facets/Markets.sol:Makret',
+      'market/facets/Markets.sol:Makrets',
 
       // Orderbook facets
       'orderbook/facets/Order.sol:Order',
@@ -103,7 +103,7 @@ const Diamonds = [
     data: [
       // Market facets
       'market/facets/Create.sol:Create',
-      'market/facets/Markets.sol:Makret',
+      'market/facets/Markets.sol:Makrets',
     ]
   },
   {
@@ -134,8 +134,8 @@ As mentioned above, the defined key is used by each diamond or facade to find th
 ```
 ─ Market Diamond Slot ─
 slot position: 0x1a2b3  = keccak256('market'):     Market facets
-slot position: 0x4c5d6  = keccak256('orderbook'):  Orderbook Facets
-slot position: 0x7e8f9  = keccak256('orderNFT'):   Order NFT Facets
+slot position: 0x4c5d6  = keccak256('orderbook'):  Orderbook facets
+slot position: 0x7e8f9  = keccak256('orderNFT'):   Order NFT facets
 ```
 
 In the constructor, just simply set the service contract's key (slot position) for data storage.
