@@ -16,20 +16,20 @@ abstract contract DiamondLoupe is DiamondBase {
 
     constructor(bool _diamond) {
         if (_diamond) {
-            bytes4[] memory selectors = new bytes4[](12);
-            selectors[0] = bytes4(0x82431dab);
-            selectors[1] = bytes4(0xcdffacc6);
-            selectors[2] = bytes4(0x52ef6b2c);
-            selectors[3] = bytes4(0xf69f473c);
-            selectors[4] = bytes4(0xadfca15e);
-            selectors[5] = bytes4(0xf28401a9);
-            selectors[6] = bytes4(0x59d96799);
-            selectors[7] = bytes4(0x7a0ed627);
-            selectors[8] = bytes4(0x8257735f);
-            selectors[9] = bytes4(0xc0a43a7c);
-            selectors[10] = bytes4(0x01ffc9a7);
-            selectors[11] = bytes4(0xc33470d3);
-            DiamondContractManager.internalCut(selectors);
+            bytes4[] memory f = new bytes4[](12);
+            f[0] = 0x82431dab;
+            f[1] = 0xcdffacc6;
+            f[2] = 0x52ef6b2c;
+            f[3] = 0xf69f473c;
+            f[4] = 0xadfca15e;
+            f[5] = 0xf28401a9;
+            f[6] = 0x59d96799;
+            f[7] = 0x7a0ed627;
+            f[8] = 0x8257735f;
+            f[9] = 0xc0a43a7c;
+            f[10] = 0x01ffc9a7;
+            f[11] = 0xc33470d3;
+            DiamondContractManager.internalCut(f, "loupe");
         }
     }
 
