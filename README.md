@@ -1,5 +1,7 @@
 # Light-weight Diamond Pattern
 
+[See example](https://github.com/l-Zetta-l/lightweight-diamond-example)
+
 ### Installaion
 
 **NPM**
