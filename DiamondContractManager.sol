@@ -13,6 +13,8 @@ library DiamondContractManager {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
 
+    bytes32 constant base = keccak256("diamond");
+
     struct Facet {
         address addr;
         bytes4[] functs;
@@ -87,19 +89,35 @@ library DiamondContractManager {
     function functs(
         bytes32 _key,
         address _facet
-    ) internal view returns (bytes4[] memory) {
-        return diamond(_key).facet[_facet].functs;
+    ) internal view returns (bytes4[] memory _functs) {
+        _functs = diamond(_key).facet[_facet].functs;
+        return
+            _functs.length != 0 ? _functs : diamond(base).facet[_facet].functs;
     }
 
     function facet(
         bytes32 _key,
         bytes4 _funct
-    ) internal view returns (address) {
-        return diamond(_key).funct[_funct].facet;
+    ) internal view returns (address _facet) {
+        _facet = diamond(_key).funct[_funct].facet;
+        return
+            _facet == address(0) ? _facet : diamond(base).funct[_funct].facet;
     }
 
-    function facets(bytes32 _key) internal view returns (address[] memory) {
-        return diamond(_key).facets;
+    function facets(
+        bytes32 _key
+    ) internal view returns (address[] memory _facets) {
+        address[] memory f = diamond(_key).facets;
+        uint l = f.length;
+        if (f.length > 0)
+            for (uint i; i < l; ++i) {
+                _facets[i] = f[i];
+            }
+        f = diamond(base).facets;
+        if (f.length > 0)
+            for (uint i; i < f.length; ++i) {
+                _facets[i + l] = f[i];
+            }
     }
 
     function getFacets(
@@ -107,11 +125,15 @@ library DiamondContractManager {
     ) internal view returns (Facet[] memory facets_) {
         Data storage $ = diamond(_key);
         uint length = $.facets.length;
-        facets_ = new Facet[](length);
+        facets_ = new Facet[](length + 1);
         for (uint i; i < length; ++i) {
             address facet_ = $.facets[i];
             facets_[i] = Facet(facet_, $.facet[facet_].functs);
         }
+        facets_[length] = Facet(
+            address(this),
+            diamond(base).facet[address(this)].functs
+        );
     }
 
     function setInterface(
@@ -175,6 +197,32 @@ library DiamondContractManager {
         initializeDiamondCut(_init, _calldata);
     }
 
+    function internalCut(bytes4[] memory _functs) internal {
+        diamond(base)._addFunctions(address(this), _functs, true);
+    }
+
+    function _addFunctions(
+        Data storage $,
+        address _facet,
+        bytes4[] memory _functs,
+        bool _internal
+    ) internal {
+        uint16 position = uint16($.facet[_facet].functs.length);
+        for (uint i; i < _functs.length; ++i) {
+            if ($.funct[_functs[i]].facet != address(0)) {
+                if (!_internal)
+                    revert IDiamond.CannotAddFunctionToDiamondThatAlreadyExists(
+                        _functs[i]
+                    );
+            } else {
+                $.facet[_facet].functs.push(_functs[i]);
+                $.funct[_functs[i]] = Funct(_facet, position);
+                ++position;
+            }
+        }
+        $.facets.push(_facet);
+    }
+
     function addFunctions(
         Data storage $,
         address _facet,
@@ -183,17 +231,7 @@ library DiamondContractManager {
         if (_facet == address(0))
             revert IDiamond.CannotAddSelectorsToZeroAddress(_functs);
         enforcedFacetHasCode(_facet, "DiamondCut: Add facet has no code");
-        uint16 position = uint16($.facet[_facet].functs.length);
-        for (uint i; i < _functs.length; ++i) {
-            if ($.funct[_functs[i]].facet != address(0))
-                revert IDiamond.CannotAddFunctionToDiamondThatAlreadyExists(
-                    _functs[i]
-                );
-            $.facet[_facet].functs.push(_functs[i]);
-            $.funct[_functs[i]] = Funct(_facet, position);
-            ++position;
-        }
-        $.facets.push(_facet);
+        $._addFunctions(_facet, _functs, false);
     }
 
     function replaceFunctions(

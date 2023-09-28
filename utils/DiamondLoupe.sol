@@ -14,6 +14,25 @@ abstract contract DiamondLoupe is DiamondBase {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
 
+    constructor(bool _diamond) {
+        if (_diamond) {
+            bytes4[] memory selectors = new bytes4[](12);
+            selectors[0] = bytes4(0x82431dab);
+            selectors[1] = bytes4(0xcdffacc6);
+            selectors[2] = bytes4(0x52ef6b2c);
+            selectors[3] = bytes4(0xf69f473c);
+            selectors[4] = bytes4(0xadfca15e);
+            selectors[5] = bytes4(0xf28401a9);
+            selectors[6] = bytes4(0x59d96799);
+            selectors[7] = bytes4(0x7a0ed627);
+            selectors[8] = bytes4(0x8257735f);
+            selectors[9] = bytes4(0xc0a43a7c);
+            selectors[10] = bytes4(0x01ffc9a7);
+            selectors[11] = bytes4(0xc33470d3);
+            DiamondContractManager.internalCut(selectors);
+        }
+    }
+
     function facets()
         public
         view

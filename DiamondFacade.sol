@@ -13,8 +13,8 @@ import {DiamondBase} from "./utils/DiamondBase.sol";
 import {DiamondAuth} from "./utils/DiamondAuth.sol";
 import {DiamondLoupe} from "./utils/DiamondLoupe.sol";
 
-import {DiamondContractManager} from "./DiamondContractManager.sol";
 import {DiamondContract} from "./DiamondContract.sol";
+import {DiamondContractManager} from "./DiamondContractManager.sol";
 
 abstract contract DiamondFacade is DiamondAuth, DiamondLoupe {
     using DiamondContractManager for bytes32;
@@ -22,7 +22,7 @@ abstract contract DiamondFacade is DiamondAuth, DiamondLoupe {
     constructor(
         string memory _key,
         address _diamond
-    ) payable DiamondBase(keccak256(abi.encodePacked(_key))) {
+    ) payable DiamondBase(_key) DiamondAuth(false) DiamondLoupe(false) {
         _this.diamond().addr = payable(_diamond);
     }
 

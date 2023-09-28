@@ -1,5 +1,19 @@
 # Light-weight Diamond Pattern
 
+### Installaion
+
+**NPM**
+
+```
+npm install @coinmeca/lightweight-diamond -D
+```
+
+**Yarn**
+
+```
+yarn add @coinmeca/lightweight-diamond -D
+```
+
 ## Overview
 
 This project was created to make it easier to use the diamond pattern through abstract implementation and inheritance.
@@ -28,13 +42,13 @@ Functions are spread out from the one single contract as facets in the diamond p
      ：
 ```
 
-`modules`: The `modules` folder is similar to `node_modules`. This is a folder that contains template contracts with ready-made functions that we need to refer to and use through importing. The light-weight version of the Diamond contract we use is located [here](modules/diamond/).
+`modules`: The `modules` folder is similar to `node_modules`. This is a folder that contains template contracts with ready-made functions that we need to refer to and use through importing. The light-weight version of the Diamond contract we use is located [here](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/modules/diamond/).
 
 ## Concept
 
 This example was created to help implement diamond patterns easily. Also, if you want to provide clear addresses to separate the touchpoints with which users will interact, you can implement a diamond pattern that shares functionality but has different data storage.
 
-In this example repository, facet management and state value management storage are used separately. Storage for diamond or facet management is created through `DiamondContractManger`, which is only used for adding and managing facets. The unique state value of a specific diamond is managed by [Data.sol](contracts/services/market/Data.sol).
+In this example repository, facet management and state value management storage are used separately. Storage for diamond or facet management is created through `DiamondContractManger`, which is only used for adding and managing facets. The unique state value of a specific diamond is managed by [Data.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/market/Data.sol).
 
 -   `DiamondContract` : It is an abstracted contract with a constructor and fallback and receive functions to use the Diamond pattern. It has a separate `DiamondContractManger`.
 -   `DiamondContractManager`: It has storage just for facet management along with the function to manage facets and owners included in the contract.
@@ -230,6 +244,11 @@ contract Orderbook is DiamondFacade{
     constructor(address _parentDiamond
     ) DiamondFacade("orderbook", _parentDiamond) {}
 }
+
+contract OrderNFT is DiamondFacade{
+    constructor(address _parentDiamond
+    ) DiamondFacade("nft", _parentDiamond) {}
+}
 ```
 
 Failure to do so may result in the facets being stored in the wrong position of the slot or the contract attempting to locate the facet addresses in the wrong position.
@@ -300,7 +319,7 @@ Therefore, facades can be created infinitely, each with its own storage. However
 
 ### Internal
 
-The functions defined in `Internals.sol` are internal and cannot be accessed from outside the blockchain, but also define functions shared by functions of different Facets. You can find an example in [Internals.sol](contracts/services/orderbook/shared/Internals.sol).
+The functions defined in `Internals.sol` are internal and cannot be accessed from outside the blockchain, but also define functions shared by functions of different Facets. You can find an example in [Internals.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/shared/Internals.sol).
 
 ```
 import 'Data.sol';
@@ -319,7 +338,7 @@ library Internals {
 }
 ```
 
-A use case for internal functions that need to be shared between facets can be found in [Internals.sol](contracts/services/orderbook/shared/Internals.sol), [Order.sol](contracts/services/orderbook/facets/Order.sol) and [Cancel.sol](contracts/services/orderbook/facets/Cancel.sol).
+A use case for internal functions that need to be shared between facets can be found in [Internals.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/shared/Internals.sol), [Order.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/facets/Order.sol) and [Cancel.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/facets/Cancel.sol).
 
 ```
 import {Data} from "../Data.sol";
@@ -378,7 +397,7 @@ contract MarketFacetB{
 
 ### Data Storage
 
-Storage that manages facets is automatically created through `DiamondContractManger` by inheriting `DiamondContract`. Separately from this, variables for state management targeting only specific services related to the business logic of the contract must form a separate [Data.sol](contracts/services/orderbook/Data.sol) contract.
+Storage that manages facets is automatically created through `DiamondContractManger` by inheriting `DiamondContract`. Separately from this, variables for state management targeting only specific services related to the business logic of the contract must form a separate [Data.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/Data.sol) contract.
 
 ```
 library Data {
@@ -413,7 +432,7 @@ contract Facet{
 }
 ```
 
-Or, for easier use, you can more conveniently access storage from all facets with a single declaration in the [Modifiers.sol](contracts/services/orderbook/shared/Modifiers.sol) contract that all facet contracts inherit.
+Or, for easier use, you can more conveniently access storage from all facets with a single declaration in the [Modifiers.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/shared/Modifiers.sol) contract that all facet contracts inherit.
 
 ```
 import {Data} './Data.sol';
@@ -442,22 +461,6 @@ contract FacetB is Modifiers{
 
 -   [Node.js 20+](https://nodejs.org)
 -   [Yarn](https://yarnpkg.com/) _(NOTE: `npm` and `pnpm` can also be used)_
-
-## Installation
-
-Install after git clone:
-
-```
-yarn install
-```
-
-## Test
-
-Test command:
-
-```
-yarn test test/test
-```
 
 ## License
 
