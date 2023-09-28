@@ -23,10 +23,11 @@ abstract contract DiamondContract is DiamondAuth, DiamondLoupe {
         string memory _key,
         IDiamond.Cut[] memory _diamondCut,
         IDiamond.Args memory _args
-    ) payable DiamondBase(keccak256(abi.encodePacked(_key))) {
+    ) payable DiamondBase(_key) DiamondAuth(true) DiamondLoupe(true) {
         _this.setOwner(_args.owner);
         _this.setPermission(address(this), true);
         _this.diamond().addr = payable(address(this));
+
         DiamondContractManager.diamondCut(
             _diamondCut,
             _args.init,

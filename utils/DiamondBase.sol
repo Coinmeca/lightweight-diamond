@@ -8,8 +8,6 @@ pragma solidity ^0.8.19;
 \******************************************************************************/
 
 import {IDiamond} from "../interfaces/IDiamond.sol";
-
-import {DiamondContract} from "../DiamondContract.sol";
 import {DiamondContractManager} from "../DiamondContractManager.sol";
 
 abstract contract DiamondBase {
@@ -18,8 +16,8 @@ abstract contract DiamondBase {
 
     bytes32 immutable _this;
 
-    constructor(bytes32 _key) payable {
-        _this = _key;
+    constructor(string memory _key) payable {
+        _this = keccak256(abi.encodePacked(_key));
     }
 
     fallback() external payable virtual {

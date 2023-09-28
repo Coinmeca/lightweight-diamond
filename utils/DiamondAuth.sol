@@ -7,12 +7,23 @@ pragma solidity ^0.8.19;
 * Lightweight version of EIP-2535 Diamonds
 \******************************************************************************/
 
-import {DiamondContractManager} from "../DiamondContractManager.sol";
 import {DiamondBase} from "./DiamondBase.sol";
+import {DiamondContractManager} from "../DiamondContractManager.sol";
 
 abstract contract DiamondAuth is DiamondBase {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
+
+    constructor(bool _diamond) {
+        if (_diamond) {
+            bytes4[] memory selectors = new bytes4[](4);
+            selectors[0] = bytes4(0x57d3a786);
+            selectors[1] = bytes4(0x8da5cb5b);
+            selectors[2] = bytes4(0x13af4035);
+            selectors[3] = bytes4(0xec6263c0);
+            DiamondContractManager.internalCut(selectors);
+        }
+    }
 
     function owner() public virtual returns (address) {
         address payable diamond = _this.diamond().addr;
