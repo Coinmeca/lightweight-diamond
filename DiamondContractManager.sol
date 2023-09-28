@@ -197,8 +197,14 @@ library DiamondContractManager {
         initializeDiamondCut(_init, _calldata);
     }
 
-    function internalCut(bytes4[] memory _functs) internal {
+    function internalCut(
+        bytes4[] memory _functs,
+        bytes memory _calldata
+    ) internal {
         diamond(base)._addFunctions(address(this), _functs, true);
+        IDiamond.Data[] memory _cut = new IDiamond.Data[](1);
+        _cut[0] = IDiamond.Data(address(this), IDiamond.Action.Add, _functs);
+        emit DiamondCut(_cut, address(this), _calldata);
     }
 
     function _addFunctions(

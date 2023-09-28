@@ -16,12 +16,12 @@ abstract contract DiamondAuth is DiamondBase {
 
     constructor(bool _diamond) {
         if (_diamond) {
-            bytes4[] memory selectors = new bytes4[](4);
-            selectors[0] = bytes4(0x57d3a786);
-            selectors[1] = bytes4(0x8da5cb5b);
-            selectors[2] = bytes4(0x13af4035);
-            selectors[3] = bytes4(0xec6263c0);
-            DiamondContractManager.internalCut(selectors);
+            bytes4[] memory f = new bytes4[](4);
+            f[0] = 0x57d3a786;
+            f[1] = 0x8da5cb5b;
+            f[2] = 0x13af4035;
+            f[3] = 0xec6263c0;
+            DiamondContractManager.internalCut(f, "auth");
         }
     }
 
