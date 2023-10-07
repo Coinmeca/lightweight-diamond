@@ -7,12 +7,10 @@ pragma solidity ^0.8.19;
 * Lightweight version of EIP-2535 Diamonds
 \******************************************************************************/
 
-import {IDiamondAuth} from "../interfaces/IDiamondAuth.sol";
-
 import {DiamondBase} from "./DiamondBase.sol";
 import {DiamondContractManager} from "../DiamondContractManager.sol";
 
-abstract contract DiamondAuth is IDiamondAuth, DiamondBase {
+abstract contract DiamondAuth is DiamondBase {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
 

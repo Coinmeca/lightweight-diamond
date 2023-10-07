@@ -8,7 +8,6 @@ pragma solidity ^0.8.19;
 \******************************************************************************/
 
 import {IDiamond} from "./interfaces/IDiamond.sol";
-import {IDiamondContract} from "./interfaces/IDiamondContract.sol";
 
 import {DiamondBase} from "./utils/DiamondBase.sol";
 import {DiamondAuth} from "./utils/DiamondAuth.sol";
@@ -17,7 +16,7 @@ import {DiamondLoupe} from "./utils/DiamondLoupe.sol";
 import {DiamondContract} from "./DiamondContract.sol";
 import {DiamondContractManager} from "./DiamondContractManager.sol";
 
-abstract contract DiamondFacade is IDiamondContract, DiamondAuth, DiamondLoupe {
+abstract contract DiamondFacade is DiamondAuth, DiamondLoupe {
     using DiamondContractManager for bytes32;
 
     constructor(
