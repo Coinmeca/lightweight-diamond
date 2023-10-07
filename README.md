@@ -2,7 +2,7 @@
 
 [See example](https://github.com/l-Zetta-l/lightweight-diamond-example)
 
-# Update Log
+## Update Log
 
 ### 1.1.9
 
@@ -11,7 +11,7 @@
 - `setPermission` => `setAccess`
 - `checkPermission` => `checkAccess`
 
-### Installaion
+## Installaion
 
 **NPM**
 
