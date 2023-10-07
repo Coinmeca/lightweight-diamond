@@ -7,10 +7,12 @@ pragma solidity ^0.8.19;
 * Lightweight version of EIP-2535 Diamonds
 \******************************************************************************/
 
+import {IDiamondLoupe} from "../interfaces/IDiamondLoupe.sol";
+
 import {DiamondBase} from "./DiamondBase.sol";
 import {DiamondContractManager} from "../DiamondContractManager.sol";
 
-abstract contract DiamondLoupe is DiamondBase {
+abstract contract DiamondLoupe is IDiamondLoupe, DiamondBase {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
 
