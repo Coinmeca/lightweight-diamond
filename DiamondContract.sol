@@ -25,7 +25,7 @@ abstract contract DiamondContract is DiamondAuth, DiamondLoupe {
         IDiamond.Args memory _args
     ) payable DiamondBase(_key) DiamondAuth(true) DiamondLoupe(true) {
         _this.setOwner(_args.owner);
-        _this.setPermission(address(this), true);
+        _this.setAccess(address(this), true);
         _this.diamond().addr = payable(address(this));
 
         DiamondContractManager.diamondCut(
