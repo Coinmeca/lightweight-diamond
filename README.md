@@ -1,4 +1,4 @@
-# Light-weight Diamond Pattern
+# Lightweight Diamond
 
 [See example](https://github.com/l-Zetta-l/lightweight-diamond-example)
 
@@ -33,18 +33,18 @@ This project was created to make it easier to use the diamond pattern through ab
 
 Functions are spread out from the one single contract as facets in the diamond pattern. Categorizing contracts with just types such as 'interfaces' or 'libraries' would make a project more complex. So in this case suggest to use like a grouping like a family according to their function's same point of features. This hierarchy and its folder structure follow:
 
-```
+```js
 ─ contracts
   └─ services
      ├─ service1
-     │  ├─ `Service.sol` : Diamond contract
-     │  ├─ `IService.sol` : Interface that combine with all of facet's functions for diamond contract
-     │  ├─ `Data.sol` : Data storage for diamond contract
-     │  ├─ shared : Shared functions between facets
-     │  │  ├─ `Modifers.sol` : Modifier functions for facets
-     │  │  ├─ `Events.sol` : Events for facets
-     │  │  └─ `Internals.sol` : Shared functions as internal for facets
-     │  └─ facets : Facets
+     │  ├─ `Service.sol` // Diamond contract
+     │  ├─ `IService.sol` // Interface that combine with all of facet's functions for diamond contract
+     │  ├─ `Data.sol` // Data storage for diamond contract
+     │  ├─ shared // Shared functions between facets
+     │  │  ├─ `Modifers.sol` // Modifier functions for facets
+     │  │  ├─ `Events.sol` // Events for facets
+     │  │  └─ `Internals.sol` // Shared functions as internal for facets
+     │  └─ facets // Facets
      │     ├─ `Facet1.sol`
      │     ├─ `Facet2.sol`
      │     └─ `Facet3.sol`
@@ -81,7 +81,7 @@ Lightweight Diamond Template's diamondCut arguments is little bit with original 
 
 As with the existing diamond pattern, if one diamond has a function for that diamond only, simply write it as an array of one length, with one struct present:
 
-```
+```js
 const Diamonds = [
   {
     key: 'diamond.only',
@@ -96,7 +96,7 @@ const Diamonds = [
 
 Or, if you want to manage the functions of multiple facets at one diamond and use them publicly without special access rights, you can use the following structure:
 
-```
+```js
 const Diamonds = [
   {
     key: 'one.diamond',
@@ -121,7 +121,7 @@ const Diamonds = [
 
 Or maybe you want to use something a little more complicated: The example below manages all the facets in one diamond, but separates the keys so that they can only be accessed and used by the diamond or facade that matches that particular key:
 
-```
+```js
 const Diamonds = [
   {
     key: 'market',
@@ -156,7 +156,7 @@ const Diamonds = [
 
 As mentioned above, the defined key is used by each diamond or facade to find the slot position in the diamond storage where the facets and functions it can use are stored. Therefore, depending on the contract type, even if the address of the contract is different, it can be grouped into one common type through the key.
 
-```
+```js
 ─ Market Diamond Slot ─
 slot position: 0x1a2b3  = keccak256('market'):     Market facets
 slot position: 0x4c5d6  = keccak256('orderbook'):  Orderbook facets
@@ -165,7 +165,7 @@ slot position: 0x7e8f9  = keccak256('orderNFT'):   Order NFT facets
 
 In the constructor, just simply set the service contract's key (slot position) for data storage.
 
-```
+```js
 contract Service is DiamondContract{
     constructor(
         IDiamond.Cut[] memory _diamondCut,
@@ -176,7 +176,7 @@ contract Service is DiamondContract{
 
 If it facade, can be used like this. facada need the parent diamond's address for the finding there facets, because of they doens't own their facets.
 
-```
+```js
 contract Service is DiamondFacade{
     constructor(
         address _parentDiamond
@@ -186,7 +186,7 @@ contract Service is DiamondFacade{
 
 Through the key defined above, we can divide storage and identify position, and figure values, then use this. This can also be used for access control purposes. All the facets were stored in one diamond, but even the diamond self cannot access the child's (facade) storage position because they have different keys to each other.
 
-```
+```js
 ─ Market Diamond ─────────────┬──┬──┐
   └─ DiamondContractManager   │  │  │
     └─ Market Facets　   ◀────┘  │  │
@@ -194,7 +194,7 @@ Through the key defined above, we can divide storage and identify position, and 
     └─ OrderNFT Facets   ◀── ✕ ─────┘
 ```
 
-```
+```js
 ─ Market Diamond ──────────────┐
   └─ DiamondContractManager    │
     └─ Market Facets　   ◀─────┘
@@ -208,7 +208,7 @@ Through the key defined above, we can divide storage and identify position, and 
 
 Possible to divide storage and access this via a one diamond, But also can make another diamond as a sharing point for common functions that be working in each clone contracts(facade).
 
-```
+```js
 ─ Market Diamond
   └─ DiamondContractManager
      └─ Market Facets ─┐
@@ -236,7 +236,7 @@ Can use this for various types or with any purpose that want to use via assemble
 
 There's one important thing for usage and have to remember is the prework in writing the deployment script. It is crucial to ensure that the keys used to divide and classify facets are consistent in both the deploy (test) code and the contract's constructor.
 
-```
+```js
 [
   { key: 'market', data: [ [Object], [Object] ] },
   { key: 'orderbook', data: [ [Object], [Object], [Object] ] },
@@ -244,7 +244,7 @@ There's one important thing for usage and have to remember is the prework in wri
 ]
 ```
 
-```
+```js
 contract Market is DiamondContract{
     constructor(
       IDiamond.Cut[] memory _diamondCut, IDiamond.Args memory _args
@@ -268,7 +268,7 @@ Failure to do so may result in the facets being stored in the wrong position of 
 
 As mentioned, Facade only acts as an endpoint to help connect in the middle, and since all facet data is managed by Diamond, the interfaces of child facades cannot be allow in each their facade directly. Therefore, if you want to manage the interface according to the type of each child facade, you must interact directly with the parent diamond. You can call `setInterface(bytes32 _key, bytes4 _interface, bool _state)` directly, but if you want to batch process it directly in the constructor, you can use it as follows.
 
-```
+```js
 constructor(
     IDiamond.Cut[] memory _diamondCut,
     IDiamond.Args memory _args
@@ -309,7 +309,7 @@ For this purpose, this is an example of factory a diamond contract called an ord
 
 Therefore, facades can be created infinitely, each with its own storage. However, since all of the facades' functions are managed by the parent diamond, multiple diamond functions can be updated and managed at once.
 
-```
+```js
 ─ Market.sol (Diamond)
   ├─ Data.sol (Local Data Storage for Market)
   │  └─ Local values for market contract only
@@ -332,7 +332,7 @@ Therefore, facades can be created infinitely, each with its own storage. However
 
 The functions defined in `Internals.sol` are internal and cannot be accessed from outside the blockchain, but also define functions shared by functions of different Facets. You can find an example in [Internals.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/shared/Internals.sol).
 
-```
+```js
 import 'Data.sol';
 
 library Internals {
@@ -351,7 +351,7 @@ library Internals {
 
 A use case for internal functions that need to be shared between facets can be found in [Internals.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/shared/Internals.sol), [Order.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/facets/Order.sol) and [Cancel.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/facets/Cancel.sol).
 
-```
+```js
 import {Data} from "../Data.sol";
 
 library Internals {
@@ -364,7 +364,7 @@ library Internals {
 }
 ```
 
-```
+```js
 import {Internals} from '../shared/Internals.sol'
 
 contract FacetA {
@@ -386,7 +386,7 @@ contract FacetB{
 
 For the public functions, you can use them by declaring them in an interface and referencing them.
 
-```
+```js
 interface IMarket {
   function facetAfunction() external;
 
@@ -410,7 +410,7 @@ contract MarketFacetB{
 
 Storage that manages facets is automatically created through `DiamondContractManger` by inheriting `DiamondContract`. Separately from this, variables for state management targeting only specific services related to the business logic of the contract must form a separate [Data.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/Data.sol) contract.
 
-```
+```js
 library Data {
   Storage {
     bool myValue1;
@@ -429,7 +429,7 @@ library Data {
 
 If you want to reference data storage in facets, they can be used in the following ways:
 
-```
+```js
 import {Data} './Data.sol';
 
 contract Facet{
@@ -445,7 +445,7 @@ contract Facet{
 
 Or, for easier use, you can more conveniently access storage from all facets with a single declaration in the [Modifiers.sol](https://github.com/l-Zetta-l/lightweight-diamond-example/blob/main/contracts/services/orderbook/shared/Modifiers.sol) contract that all facet contracts inherit.
 
-```
+```js
 import {Data} './Data.sol';
 
 contract Modifiers {
@@ -475,4 +475,4 @@ contract FacetB is Modifiers{
 
 ## License
 
-MIT - see [LICSENSE](LICENSE)
+CC0-1.0 - see [LICSENSE](LICENSE)
