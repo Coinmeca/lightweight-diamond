@@ -45,7 +45,7 @@ interface IDiamond {
     ) external;
 
     error NoSelectorsGivenToAdd();
-    error PermissionDenied(address _sender);
+    error AccessDenied(address _sender);
     error NotContractOwner(address _user, address _contractOwner);
     error NoSelectorsProvidedForFacetForCut(address _facetAddress);
     error CannotAddSelectorsToZeroAddress(bytes4[] _selectors);

@@ -17,10 +17,10 @@ abstract contract DiamondAuth is DiamondBase {
     constructor(bool _diamond) {
         if (_diamond) {
             bytes4[] memory f = new bytes4[](4);
-            f[0] = 0x57d3a786;
+            f[0] = 0x466a0146;
             f[1] = 0x8da5cb5b;
-            f[2] = 0x13af4035;
-            f[3] = 0xec6263c0;
+            f[2] = 0xb84614a5;
+            f[3] = 0x13af4035;
             DiamondContractManager.internalCut(f, "auth");
         }
     }
@@ -40,20 +40,18 @@ abstract contract DiamondAuth is DiamondBase {
             : DiamondAuth(diamond).setOwner(_owner);
     }
 
-    function setPermission(address _owner, bool _permission) public virtual {
+    function setAccess(address _owner, bool _access) public virtual {
         address payable diamond = _this.diamond().addr;
         diamond == address(this)
-            ? _this.setPermission(_owner, _permission)
-            : DiamondAuth(diamond).setPermission(_owner, _permission);
+            ? _this.setAccess(_owner, _access)
+            : DiamondAuth(diamond).setAccess(_owner, _access);
     }
 
-    function checkPermission(
-        address _owner
-    ) public view virtual returns (bool) {
+    function checkAccess(address _owner) public view virtual returns (bool) {
         address payable diamond = _this.diamond().addr;
         return
             diamond == address(this)
-                ? _this.checkPermission(_owner)
-                : DiamondAuth(diamond).checkPermission(_owner);
+                ? _this.checkAccess(_owner)
+                : DiamondAuth(diamond).checkAccess(_owner);
     }
 }

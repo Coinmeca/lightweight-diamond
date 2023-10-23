@@ -2,6 +2,7 @@
     "name": "@coinmeca/lightweight-diamond",
     "description": "The lightweight template of the core diamond contract for Solidity building.",
     "keywords": [
+        "coinmeca",
         "smart-contract",
         "solidity",
         "eip",
@@ -11,8 +12,8 @@
         "diamond",
         "diamond pattern"
     ],
-    "version": "1.1.8",
-    "license": "MIT",
+    "version": "1.2.7",
+    "license": "CC0-1.0",
     "files": [
         "*.sol",
         "**/*.sol"

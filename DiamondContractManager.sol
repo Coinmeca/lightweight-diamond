@@ -32,7 +32,7 @@ library DiamondContractManager {
         mapping(address => Facet) facet;
         mapping(bytes4 => Funct) funct;
         mapping(bytes4 => bool) interfaces;
-        mapping(address => bool) permission;
+        mapping(address => bool) access;
     }
 
     function diamond(bytes32 _key) internal pure returns (Data storage $) {
@@ -47,7 +47,7 @@ library DiamondContractManager {
         enforceIsContractOwner(_key);
         Data storage $ = diamond(_key);
         $.owner = _owner;
-        $.permission[_owner] = true;
+        $.access[_owner] = true;
         emit OwnershipTransferred($.owner, _owner);
     }
 
@@ -63,24 +63,20 @@ library DiamondContractManager {
             }
     }
 
-    /* Permission */
+    /* Access */
 
-    function setPermission(
-        bytes32 _key,
-        address _owner,
-        bool _permission
-    ) internal {
-        _key.checkPermission(msg.sender);
-        diamond(_key).permission[_owner] = _permission;
+    function setAccess(bytes32 _key, address _owner, bool _access) internal {
+        _key.checkAccess(msg.sender);
+        diamond(_key).access[_owner] = _access;
     }
 
-    function checkPermission(
+    function checkAccess(
         bytes32 _key,
         address _owner
     ) internal view returns (bool check) {
         Data storage $ = diamond(_key);
-        check = $.permission[_owner];
-        if (!check) revert IDiamond.PermissionDenied(_owner);
+        check = $.access[_owner];
+        if (!check) revert IDiamond.AccessDenied(_owner);
         return check;
     }
 
@@ -142,7 +138,7 @@ library DiamondContractManager {
         bytes4 _interface,
         bool _state
     ) internal {
-        _key.checkPermission(msg.sender);
+        _key.checkAccess(msg.sender);
         diamond(_service).interfaces[_interface] = _state;
     }
 
@@ -274,7 +270,7 @@ library DiamondContractManager {
         bytes4[] memory _functs
     ) internal {
         uint position = $.facet[_facet].functs.length;
-        if (_facet != address(0))
+        if (_facet == address(0))
             revert IDiamond.RemoveFacetAddressMustBeZeroAddress(_facet);
         for (uint i; i < _functs.length; ++i) {
             bytes4 funct_ = _functs[i];
