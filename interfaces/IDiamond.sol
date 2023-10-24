@@ -60,6 +60,7 @@ interface IDiamond {
     );
     error CannotReplaceFunctionThatDoesNotExists(bytes4 _selector);
     error RemoveFacetAddressMustBeZeroAddress(address _facetAddress);
+    error RemoveFacetAddressNotFound(address _facetAddress);
     error CannotRemoveFunctionThatDoesNotExist(bytes4 _selector);
     error CannotRemoveImmutableFunction(bytes4 _selector);
     error InitializationFunctionReverted(

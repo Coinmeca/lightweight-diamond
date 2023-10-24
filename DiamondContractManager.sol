@@ -271,7 +271,7 @@ library DiamondContractManager {
     ) internal {
         uint position = $.facet[_facet].functs.length;
         if (_facet == address(0))
-            revert IDiamond.RemoveFacetAddressMustBeZeroAddress(_facet);
+            revert IDiamond.RemoveFacetAddressNotFound(_facet);
         for (uint i; i < _functs.length; ++i) {
             bytes4 funct_ = _functs[i];
             Funct memory old = $.funct[funct_];
