@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.22;
 
 /******************************************************************************\
 * Author: Nick Mudge <nick@perfectabstractions.com>, Twitter/Github: @mudgen
@@ -97,7 +97,7 @@ library DiamondContractManager {
     ) internal view returns (address _facet) {
         _facet = diamond(_key).funct[_funct].facet;
         return
-            _facet == address(0) ? _facet : diamond(base).funct[_funct].facet;
+            _facet == address(0) ? diamond(base).funct[_funct].facet : _facet;
     }
 
     function facets(

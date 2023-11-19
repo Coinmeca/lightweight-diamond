@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.22;
 
 import {IDiamondAuth} from "./IDiamondAuth.sol";
 import {IDiamondLoupe} from "./IDiamondLoupe.sol";

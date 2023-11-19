@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.22;
 
 interface IDiamondAuth {
     function owner() external returns (address);
