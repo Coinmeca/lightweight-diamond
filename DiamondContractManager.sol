@@ -88,7 +88,7 @@ library DiamondContractManager {
     ) internal view returns (bytes4[] memory _functs) {
         _functs = diamond(_key).facet[_facet].functs;
         return
-            _functs.length != 0 ? _functs : diamond(base).facet[_facet].functs;
+            _functs.length == 0 ? diamond(base).facet[_facet].functs : _functs;
     }
 
     function facet(
