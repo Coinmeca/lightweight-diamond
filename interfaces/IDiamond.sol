@@ -61,7 +61,11 @@ interface IDiamond {
     error CannotReplaceFunctionThatDoesNotExists(bytes4 _selector);
     error RemoveFacetAddressMustBeZeroAddress(address _facetAddress);
     error RemoveFacetAddressNotFound(address _facetAddress);
+    error Connot(bytes4 _selector);
     error CannotRemoveFunctionThatDoesNotExist(bytes4 _selector);
+    error CannotRemoveFunctionFromFacetAddressThatDoesNotExist(
+        address _facetAddress
+    );
     error CannotRemoveImmutableFunction(bytes4 _selector);
     error InitializationFunctionReverted(
         address _initializationContractAddress,
