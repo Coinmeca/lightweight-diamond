@@ -211,6 +211,10 @@ library DiamondContractManager {
         bool _internal
     ) internal {
         uint16 position = uint16($.facet[_facet].functs.length);
+        if (position == 0) {
+            $.index[_facet] = uint16($.facets.length);
+            $.facets.push(_facet);
+        }
         for (uint i; i < _functs.length; ++i) {
             if ($.funct[_functs[i]].facet != address(0)) {
                 if (!_internal)
@@ -223,8 +227,6 @@ library DiamondContractManager {
                 ++position;
             }
         }
-        $.index[_facet] = uint16($.facets.length);
-        $.facets.push(_facet);
     }
 
     function addFunctions(
@@ -271,6 +273,8 @@ library DiamondContractManager {
                     .functs[last];
                 $.facet[old.facet].functs.pop();
             } else {
+                $.facets[$.index[old.facet]] = $.facets[$.facets.length - 1];
+                $.facets.pop();
                 delete $.facet[old.facet];
                 delete $.index[old.facet];
             }
@@ -315,8 +319,10 @@ library DiamondContractManager {
                 $.facet[_facet].functs.pop();
                 delete $.funct[funct_];
             } else {
-                delete $.facet[_facet];
-                delete $.index[_facet];
+                $.facets[$.index[old.facet]] = $.facets[$.facets.length];
+                $.facets.pop();
+                delete $.facet[old.facet];
+                delete $.index[old.facet];
             }
         }
     }
