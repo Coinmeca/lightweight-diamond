@@ -29,6 +29,7 @@ library DiamondContractManager {
         address payable addr;
         address owner;
         address[] facets;
+        mapping(address => uint16) index;
         mapping(address => Facet) facet;
         mapping(bytes4 => Funct) funct;
         mapping(bytes4 => bool) interfaces;
@@ -222,6 +223,7 @@ library DiamondContractManager {
                 ++position;
             }
         }
+        $.index[_facet] = uint16($.facets.length);
         $.facets.push(_facet);
     }
 
@@ -246,22 +248,40 @@ library DiamondContractManager {
                 _functs
             );
         enforcedFacetHasCode(_facet, "DiamondCut: Replace facet has no code");
+        uint16 position = uint16($.facet[_facet].functs.length);
         for (uint i; i < _functs.length; ++i) {
             bytes4 funct_ = _functs[i];
-            address facet_ = $.funct[funct_].facet;
-            if (facet_ == _facet)
+            Funct memory old = $.funct[funct_];
+            if (old.facet == _facet)
                 revert IDiamond
                     .CannotReplaceFunctionWithTheSameFunctionFromTheSameFacet(
                         funct_
                     );
-            if (facet_ == address(0))
+            if (old.facet == address(0))
                 revert IDiamond.CannotReplaceFunctionThatDoesNotExists(funct_);
             // can't replace immutable functions -- functions defined directly in the diamond in this case
-            if (facet_ == address(this))
+            if (old.facet == address(this))
                 revert IDiamond.CannotReplaceImmutableFunction(funct_);
-            // replace old facet address
+
+            // delete old functions
+            if ($.facet[old.facet].functs.length > 1) {
+                uint last = $.facet[old.facet].functs.length - 1;
+                $.facet[old.facet].functs[old.position] = $
+                    .facet[old.facet]
+                    .functs[last];
+                $.facet[old.facet].functs.pop();
+            } else {
+                delete $.facet[old.facet];
+                delete $.index[old.facet];
+            }
+
+            // regist new functions
             $.funct[funct_].facet = _facet;
+            $.funct[funct_].position = position;
+            $.facet[_facet].functs.push(funct_);
+            ++position;
         }
+        $.facets.push(_facet);
     }
 
     function removeFunctions(
@@ -270,6 +290,9 @@ library DiamondContractManager {
         bytes4[] memory _functs
     ) internal {
         uint position = $.facet[_facet].functs.length;
+        if (position > 0)
+            revert IDiamond
+                .CannotRemoveFunctionFromFacetAddressThatDoesNotExist(_facet);
         if (_facet == address(0))
             revert IDiamond.RemoveFacetAddressNotFound(_facet);
         for (uint i; i < _functs.length; ++i) {
@@ -281,15 +304,20 @@ library DiamondContractManager {
             if (old.facet == address(this))
                 revert IDiamond.CannotRemoveImmutableFunction(funct_);
             // replace funct with last funct
-            --position;
-            if (old.position != position) {
-                bytes4 last = $.facet[_facet].functs[position];
-                $.facet[_facet].functs[old.position] = last;
-                $.funct[last].position = old.position;
+            if ($.facet[_facet].functs.length > 1) {
+                --position;
+                if (old.position != position) {
+                    bytes4 last = $.facet[_facet].functs[position];
+                    $.facet[_facet].functs[old.position] = last;
+                    $.funct[last].position = old.position;
+                }
+                // delete last funct
+                $.facet[_facet].functs.pop();
+                delete $.funct[funct_];
+            } else {
+                delete $.facet[_facet];
+                delete $.index[_facet];
             }
-            // delete last funct
-            $.facet[_facet].functs.pop();
-            delete $.funct[funct_];
         }
     }
 

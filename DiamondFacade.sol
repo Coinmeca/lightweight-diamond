@@ -13,8 +13,11 @@ import {DiamondBase} from "./utils/DiamondBase.sol";
 import {DiamondAuth} from "./utils/DiamondAuth.sol";
 import {DiamondLoupe} from "./utils/DiamondLoupe.sol";
 
-import {DiamondContract} from "./DiamondContract.sol";
 import {DiamondContractManager} from "./DiamondContractManager.sol";
+
+interface IDiamondContract {
+    function facet(bytes32, bytes4) external view returns (address);
+}
 
 abstract contract DiamondFacade is DiamondAuth, DiamondLoupe {
     using DiamondContractManager for bytes32;
@@ -27,7 +30,10 @@ abstract contract DiamondFacade is DiamondAuth, DiamondLoupe {
     }
 
     fallback() external payable virtual override {
-        address f = DiamondContract(_this.diamond().addr).facet(_this, msg.sig);
+        address f = IDiamondContract(_this.diamond().addr).facet(
+            _this,
+            msg.sig
+        );
         if (f == address(0)) revert IDiamond.FunctionNotFound(msg.sig);
         assembly {
             calldatacopy(0, 0, calldatasize())
