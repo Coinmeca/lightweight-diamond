@@ -290,7 +290,7 @@ library DiamondContractManager {
         bytes4[] memory _functs
     ) internal {
         uint position = $.facet[_facet].functs.length;
-        if (position > 0)
+        if (position == 0)
             revert IDiamond
                 .CannotRemoveFunctionFromFacetAddressThatDoesNotExist(_facet);
         if (_facet == address(0))
