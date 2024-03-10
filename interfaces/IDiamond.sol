@@ -21,8 +21,8 @@ interface IDiamond {
     }
 
     struct Data {
-        address facetAddress;
         Action action;
+        address facetAddress;
         bytes4[] functionSelectors;
     }
 

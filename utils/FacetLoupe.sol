@@ -11,9 +11,10 @@ import {DiamondBase} from "./DiamondBase.sol";
 import {DiamondContractManager} from "../DiamondContractManager.sol";
 import {IDiamondLoupe} from "../interfaces/IDiamondLoupe.sol";
 
-abstract contract DiamondLoupe is DiamondBase {
+abstract contract FacetLoupe {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
+    bytes32 constant _this = "";
 
     constructor(bool _diamond) {
         if (_diamond) {
