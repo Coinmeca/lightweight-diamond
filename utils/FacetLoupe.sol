@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity ^0.8.22;
+pragma solidity ^0.8.24;
 
 /******************************************************************************\
-* Author: Nick Mudge <nick@perfectabstractions.com>, Twitter/Github: @mudgen
-* Modifier : Coinmeca Team <dev@coinmeca.net>
+* Author: Coinmeca Team <dev@coinmeca.net>
 * Lightweight version of EIP-2535 Diamonds
 \******************************************************************************/
 
@@ -15,25 +14,6 @@ abstract contract FacetLoupe {
     using DiamondContractManager for bytes32;
     using DiamondContractManager for DiamondContractManager.Data;
     bytes32 constant _this = "";
-
-    constructor(bool _diamond) {
-        if (_diamond) {
-            bytes4[] memory f = new bytes4[](12);
-            f[0] = 0x82431dab;
-            f[1] = 0xcdffacc6;
-            f[2] = 0x52ef6b2c;
-            f[3] = 0xf69f473c;
-            f[4] = 0xadfca15e;
-            f[5] = 0xf28401a9;
-            f[6] = 0x59d96799;
-            f[7] = 0x7a0ed627;
-            f[8] = 0x8257735f;
-            f[9] = 0xc0a43a7c;
-            f[10] = 0x01ffc9a7;
-            f[11] = 0xc33470d3;
-            DiamondContractManager.internalCut(f, "loupe");
-        }
-    }
 
     function facets()
         public

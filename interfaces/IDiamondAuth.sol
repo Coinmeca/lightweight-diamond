@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
-pragma solidity ^0.8.22;
+pragma solidity ^0.8.24;
+
+/******************************************************************************\
+* Author: Coinmeca Team <dev@coinmeca.net>
+* Lightweight version of EIP-2535 Diamonds
+\******************************************************************************/
 
 interface IDiamondAuth {
     function owner() external returns (address);
