@@ -58,6 +58,7 @@ interface IDiamond {
         bytes4 _selector
     );
     error CannotReplaceFunctionThatDoesNotExists(bytes4 _selector);
+    error ConnotReplaceWithWrongArguments(address _facetAddress);
     error RemoveFacetAddressMustBeZeroAddress(address _facetAddress);
     error RemoveFacetAddressNotFound(address _facetAddress);
     error Connot(bytes4 _selector);
