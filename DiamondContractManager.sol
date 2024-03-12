@@ -304,8 +304,6 @@ library DiamondContractManager {
         if (position == 0)
             revert IDiamond
                 .CannotRemoveFunctionFromFacetAddressThatDoesNotExist(_facet);
-        if (_facet == address(0))
-            revert IDiamond.RemoveFacetAddressNotFound(_facet);
         for (uint i; i < _functs.length; ++i) {
             bytes4 funct_ = _functs[i];
             Funct memory old = $.funct[funct_];
