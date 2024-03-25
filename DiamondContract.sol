@@ -23,15 +23,14 @@ abstract contract DiamondContract is DiamondAuth, DiamondLoupe {
         IDiamond.Cut[] memory _diamondCut,
         IDiamond.Args memory _args
     ) payable DiamondBase(_key) DiamondAuth(true) DiamondLoupe(true) {
-        _this.setOwner(_args.owner);
-        _this.setAccess(address(this), true);
-        _this.diamond().addr = payable(address(this));
-
+        DiamondContractManager.initialOwner(_args.owner);
         DiamondContractManager.diamondCut(
             _diamondCut,
             _args.init,
             _args.initCalldata
         );
+
+        _this.diamond().addr = payable(address(this));
     }
 
     function facet(bytes4 _funct) public virtual returns (address) {

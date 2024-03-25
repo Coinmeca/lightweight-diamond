@@ -6,8 +6,8 @@ pragma solidity ^0.8.24;
 * Lightweight version of EIP-2535 Diamonds
 \******************************************************************************/
 
-import {DiamondBase} from "./DiamondBase.sol";
-import {DiamondContractManager} from "../DiamondContractManager.sol";
+import { DiamondBase } from "./DiamondBase.sol";
+import { DiamondContractManager } from "../DiamondContractManager.sol";
 
 abstract contract DiamondAuth is DiamondBase {
     using DiamondContractManager for bytes32;
@@ -26,31 +26,29 @@ abstract contract DiamondAuth is DiamondBase {
 
     function owner() public virtual returns (address) {
         address payable diamond = _this.diamond().addr;
-        return
-            diamond == address(this)
-                ? _this.owner()
-                : DiamondAuth(diamond).owner();
+        return diamond == address(this) 
+            ? DiamondContractManager.owner() 
+            : DiamondAuth(diamond).owner();
     }
 
     function setOwner(address _owner) public virtual {
         address payable diamond = _this.diamond().addr;
-        diamond == address(this)
-            ? _this.setOwner(_owner)
+        diamond == address(this) 
+            ? DiamondContractManager.setOwner(_owner) 
             : DiamondAuth(diamond).setOwner(_owner);
     }
 
     function setAccess(address _owner, bool _access) public virtual {
         address payable diamond = _this.diamond().addr;
-        diamond == address(this)
-            ? _this.setAccess(_owner, _access)
+        diamond == address(this) 
+            ? _this.setAccess(_owner, _access) 
             : DiamondAuth(diamond).setAccess(_owner, _access);
     }
 
     function checkAccess(address _owner) public view virtual returns (bool) {
         address payable diamond = _this.diamond().addr;
-        return
-            diamond == address(this)
-                ? _this.checkAccess(_owner)
-                : DiamondAuth(diamond).checkAccess(_owner);
+        return diamond == address(this) 
+            ? _this.checkAccess(_owner) 
+            : DiamondAuth(diamond).checkAccess(_owner);
     }
 }
