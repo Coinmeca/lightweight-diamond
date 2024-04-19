@@ -251,13 +251,9 @@ library DiamondContractManager {
                 _functs
             );
         enforcedFacetHasCode(_facet, "DiamondCut: Replace facet has no code");
+        uint16 position = uint16($.facet[_facet].functs.length);
         for (uint i; i < _functs.length; ++i) {
             Funct memory old = $.funct[_functs[i]];
-            if (old.facet == _facet)
-                revert IDiamond
-                    .CannotReplaceFunctionWithTheSameFunctionFromTheSameFacet(
-                        _functs[i]
-                    );
 
             if (old.facet == address(0))
                 revert IDiamond.CannotReplaceFunctionThatDoesNotExists(
@@ -284,8 +280,9 @@ library DiamondContractManager {
 
             // regist new functions
             $.funct[_functs[i]].facet = _facet;
-            $.funct[_functs[i]].position = uint16(i);
+            $.funct[_functs[i]].position = position;
             $.facet[_facet].functs.push(_functs[i]);
+            ++position;
         }
         if ($.index[_facet] == 0) {
             $.facets.push(_facet);
