@@ -254,7 +254,6 @@ library DiamondContractManager {
         uint16 position = uint16($.facet[_facet].functs.length);
         for (uint i; i < _functs.length; ++i) {
             Funct memory old = $.funct[_functs[i]];
-
             if (old.facet == address(0))
                 revert IDiamond.CannotReplaceFunctionThatDoesNotExists(
                     _functs[i]
