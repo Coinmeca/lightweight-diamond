@@ -269,6 +269,8 @@ library DiamondContractManager {
                 $.facet[old.facet].functs[old.position] = $
                     .facet[old.facet]
                     .functs[last];
+                $.funct[$.facet[old.facet].functs[last]].position = old
+                    .position;
                 $.facet[old.facet].functs.pop();
             } else {
                 $.facets[$.index[old.facet]] = $.facets[$.facets.length - 1];
