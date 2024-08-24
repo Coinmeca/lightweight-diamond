@@ -12,7 +12,7 @@
         "diamond",
         "diamond pattern"
     ],
-    "version": "1.5.2",
+    "version": "1.5.3",
     "license": "CC0-1.0",
     "files": [
         "*.sol",
